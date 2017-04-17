@@ -1,6 +1,8 @@
 package com.addresbook;
 
-import java.util.Vector;
+
+
+import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -29,6 +31,7 @@ public class msgPanel extends JPanel {
 
 
         smsData = JRead.readSms();
+        Collections.sort(smsData, new TimeDescCompare());
         //System.out.println(smsData.elementAt(0).getNumber_());
 
 
@@ -67,6 +70,16 @@ public class msgPanel extends JPanel {
         this.add(msgMenu, BorderLayout.SOUTH);
 
     }
+
+    static class TimeDescCompare implements Comparator<Sms> {
+
+        // 내림차순
+        public int compare(Sms arg0, Sms arg1) {
+            return arg1.getTime_().compareTo(arg0.getTime_());
+        }
+
+    }
+
 
     class ButtonListener implements ActionListener {
         @Override
@@ -124,4 +137,7 @@ public class msgPanel extends JPanel {
             }
         }
     }
+
+
+
 }

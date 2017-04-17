@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
+import java.util.*;
 
 public class callPanel extends JPanel {
 
@@ -18,6 +18,7 @@ public class callPanel extends JPanel {
     JTextArea midContent = new JTextArea(32, 32);
     JScrollPane midScroll = new JScrollPane(midContent);
     Vector<Call> callData = new Vector<Call>();
+
 
     public callPanel(){
 
@@ -34,6 +35,8 @@ public class callPanel extends JPanel {
 
         callData = JRead.readCall();
         //System.out.println(smsData.elementAt(0).getNumber_());
+
+        Collections.sort(callData, new TimeDescCompare());
 
 
         for(int i=0 ; i < callData.size() ; i++) {
@@ -75,6 +78,20 @@ public class callPanel extends JPanel {
         this.add(msgMenu, BorderLayout.SOUTH);
 
     }
+
+
+
+    static class TimeDescCompare implements Comparator<Call> {
+
+        // 내림차순
+        public int compare(Call arg0, Call arg1) {
+            return arg1.getTime_().compareTo(arg0.getTime_());
+        }
+
+    }
+
+
+
 
     class ButtonListener implements ActionListener {
         @Override
