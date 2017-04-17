@@ -1,6 +1,9 @@
 package com.addresbook;
 
 
+import java.util.Collections;
+import java.util.Vector;
+
 /**
  * Created by USER on 2017-04-15.
  */
@@ -24,7 +27,19 @@ public class Person {
         return email_;
     }
 
+    public static void sortEntry (Vector<Person> entry) {
+        Collections.sort(entry, new PersonComparator());
+    }
+
+    static class PersonComparator implements Comparator<Person> {
+        public int compare (Person left, Person right) {
+            return left.getName_().compareTo(right.getName_());
+        }
+    }
+
     private String name_;
     private String number_;
     private String email_;
 }
+
+
