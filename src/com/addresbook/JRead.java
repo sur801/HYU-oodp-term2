@@ -14,8 +14,8 @@ import java.util.Vector;
  * Created by Jeonghoon Lee on 2017-04-15.
  */
 public class JRead {
-    //public static Vector<Person> readPerson(String[] args) {
-    public static void main(String[] args) {
+    public static Vector<Person> readPerson(String[] args) {
+    //public static void main(String[] args) {
 
         JSONParser parser = new JSONParser();
         Vector<Person> persons = new Vector<Person>();
