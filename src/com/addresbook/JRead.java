@@ -14,7 +14,9 @@ import java.util.Vector;
  * Created by Jeonghoon Lee on 2017-04-15.
  */
 public class JRead {
-    public static Vector<Person> readPerson(String[] args) {
+
+
+    public static Vector<Person> readPerson() {
     //public static void main(String[] args) {
 
         JSONParser parser = new JSONParser();
@@ -36,8 +38,6 @@ public class JRead {
 
                 persons.add(newPerson);
 
-                System.out.println(name);
-                System.out.println(number);
             }
 
             /*
@@ -57,7 +57,7 @@ public class JRead {
             e.printStackTrace();
         }
 
-        // return persons;
+         return persons;
     }
 
     public static Vector<Call> readCall() {

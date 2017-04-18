@@ -2,16 +2,17 @@ package com.addresbook;
 
 
 import java.awt.*;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.*;
+
 import java.util.stream.Stream;
 
 /**
  * Created by USER on 2017-04-15.
  */
 public class Person {
+    Person () {
+
+    }
 
     Person (String name, String number, String email) {
         this.name_ = name;
@@ -43,6 +44,7 @@ public class Person {
         int right = entry.size() - 1;
         Person p = new Person();
 
+        // 이진 탐색으로 찾기!
         while (left <= right) {
             int mid = (left + right) / 2;
             if (entry.elementAt(mid).getName_().equals(name)) {
@@ -65,9 +67,11 @@ public class Person {
 
         if (p != null) {
             entry.removeElement(p);
-        }
+            return entry;
+        } else
+            return null;
 
-        return entry;
+
     }
 
 

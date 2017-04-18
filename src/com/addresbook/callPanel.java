@@ -8,16 +8,18 @@ import java.util.*;
 
 public class callPanel extends JPanel {
 
-    JButton seeAll = new JButton("All");
-    JButton seeSent = new JButton("Sent");
-    JButton seeRece = new JButton("Received");
-    JButton seeMiss = new JButton("Missed");
+    // call History 옵션 메뉴
+    JButton seeAll = new JButton("All"); // 모든 전화 기록
+    JButton seeSent = new JButton("Sent"); // 내가 건 전화 기록
+    JButton seeRece = new JButton("Received"); // 내가 받은 메시지 기록
+    JButton seeMiss = new JButton("Missed"); // 부재중 전화 기록
 
 
-    JPanel msgMenu = new JPanel();
-    JTextArea midContent = new JTextArea(32, 32);
-    JScrollPane midScroll = new JScrollPane(midContent);
-    Vector<Call> callData = new Vector<Call>();
+    JPanel callMenu = new JPanel(); // 옵션 메뉴들을 붙여줄 callMenu, jpanel로 만듦
+    JTextArea midContent = new JTextArea(32, 30); // 현재 패널에 삽입될 text area, 전화 기록들이 표시될 공간
+    JScrollPane midScroll = new JScrollPane(midContent); // midContent에 생길 scroll bar
+
+    Vector<Call> callData = new Vector<Call>(); // json 파일에서 데이터를 읽어올 callHistory를 저장할 vector
 
 
     public callPanel(){
@@ -28,17 +30,20 @@ public class callPanel extends JPanel {
 
 
         midScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        midScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        midScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         midContent.append("   S  |" + "        Time         " +  "|   Phone number " + "   |" + " During\n" );
 
 
 
-        callData = JRead.readCall();
-        //System.out.println(smsData.elementAt(0).getNumber_());
+        callData = JRead.readCall();// json파일로부터 데이터를 읽어온다
 
         Collections.sort(callData, new TimeDescCompare());
+        // 시간 순 정렬 ( 내림차순 정렬 )
 
 
+        // status가 0이면 내가 건 전화 이므로 -> 표시
+        // status가 1이면 내가 받은 전화 이므로 <- 표시
+        // status가 2이면 부재중 전화 이므로 ??? 표시
         for(int i=0 ; i < callData.size() ; i++) {
 
             if((callData.elementAt(i).getStatus_().equals("0")))
@@ -49,18 +54,22 @@ public class callPanel extends JPanel {
                 midContent.append("  ??? ");
 
             midContent.append(" "+callData.elementAt(i).getTime_() + " | ");
-            midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+            String number = callData.elementAt(i).getNumber_();
+            Person p = contactPanel.contactMap.get(number);
+            if(p==null)
+                midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+            else {
+                midContent.append(p.getName_() + "\t | ");
+            }
             midContent.append(" " + callData.elementAt(i).getDuration_() + "  ");
-
+            //append 메소드를 통해 textArea에 내용을 추가 한다
 
             midContent.append("\n");
         }
 
-
-
         this.add(midScroll, BorderLayout.CENTER);
 
-        msgMenu.setBackground(Color.getHSBColor((float)2.00,(float)0.15, (float)1.0));
+        callMenu.setBackground(Color.getHSBColor((float)2.00,(float)0.15, (float)1.0));
 
         ButtonListener btnListener = new ButtonListener();
 
@@ -70,12 +79,14 @@ public class callPanel extends JPanel {
         seeRece.addActionListener(btnListener);
         seeMiss.addActionListener(btnListener);
 
-        msgMenu.add(seeAll);
-        msgMenu.add(seeSent);
-        msgMenu.add(seeRece);
-        msgMenu.add(seeMiss);
+        // callHistory 옵션 메뉴의 버튼들에 각각 button listener를 달아준다.
 
-        this.add(msgMenu, BorderLayout.SOUTH);
+        callMenu.add(seeAll);
+        callMenu.add(seeSent);
+        callMenu.add(seeRece);
+        callMenu.add(seeMiss);
+
+        this.add(callMenu, BorderLayout.SOUTH);
 
     }
 
@@ -92,11 +103,12 @@ public class callPanel extends JPanel {
 
 
 
-
+// 버튼 리스너!
     class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            // All 버튼 누를 때
             if( e.getActionCommand().equals("All") ) {
 
                 midContent.setText("   S  |" + "        Time         " +  "|   Phone number " + "   |" + " During\n" );
@@ -110,13 +122,23 @@ public class callPanel extends JPanel {
                         midContent.append("  ??? ");
 
                     midContent.append(" "+callData.elementAt(i).getTime_() + " | ");
-                    midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+
+                    String number = callData.elementAt(i).getNumber_();
+                    Person p = contactPanel.contactMap.get(number);
+                    if(p==null)
+                        midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+                    else {
+                        midContent.append(" "+ p.getName_() + "\t | ");
+                    }
+
                     midContent.append(" " + callData.elementAt(i).getDuration_() + "  ");
                     midContent.append("\n");
                 }
 
 
-            } else if( e.getActionCommand().equals("Sent")){
+
+            } // Sent 버튼 누를 때
+            else if( e.getActionCommand().equals("Sent")){
 
                 midContent.setText("   S  |" + "        Time         " +  "|   Phone number " + "   |" + " During\n" );
 
@@ -125,14 +147,23 @@ public class callPanel extends JPanel {
                     if ((callData.elementAt(i).getStatus_().equals("0"))) {
                         midContent.append(" -> ");
                         midContent.append(" "+callData.elementAt(i).getTime_() + " | ");
-                        midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+
+                        String number = callData.elementAt(i).getNumber_();
+                        Person p = contactPanel.contactMap.get(number);
+                        if(p==null)
+                            midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+                        else {
+                            midContent.append(" "+ p.getName_() + "\t | ");
+                        }
+
                         midContent.append(" " + callData.elementAt(i).getDuration_() + "  ");
                         midContent.append("\n");
                     }
                 }
 
 
-            } else if( e.getActionCommand().equals("Received")) {
+            } // Received 버튼 누를 때
+            else if( e.getActionCommand().equals("Received")) {
                 midContent.setText("   S  |" + "        Time         " +  "|   Phone number " + "   |" + " During\n" );
 
                 for(int i=0 ; i < callData.size() ; i++) {
@@ -140,7 +171,15 @@ public class callPanel extends JPanel {
                     if((callData.elementAt(i).getStatus_().equals("1"))) {
                         midContent.append(" <- ");
                         midContent.append(" "+callData.elementAt(i).getTime_() + " | ");
-                        midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+
+                        String number = callData.elementAt(i).getNumber_();
+                        Person p = contactPanel.contactMap.get(number);
+                        if(p==null)
+                            midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+                        else {
+                            midContent.append(" "+ p.getName_() + "\t | ");
+                        }
+
                         midContent.append(" " + callData.elementAt(i).getDuration_() + "  ");
                         midContent.append("\n");
                     }
@@ -148,7 +187,8 @@ public class callPanel extends JPanel {
 
                 }
 
-            }  else if( e.getActionCommand().equals("Missed")) {
+            }  // Missed 버튼 누를 때
+            else if( e.getActionCommand().equals("Missed")) {
                 midContent.setText("   S  |" + "        Time         " +  "|   Phone number " + "   |" + " During\n" );
 
                 for(int i=0 ; i < callData.size() ; i++) {
@@ -156,7 +196,15 @@ public class callPanel extends JPanel {
                     if((callData.elementAt(i).getStatus_().equals("2"))) {
                         midContent.append("  ??? ");
                         midContent.append(" "+callData.elementAt(i).getTime_() + " | ");
-                        midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+
+                        String number = callData.elementAt(i).getNumber_();
+                        Person p = contactPanel.contactMap.get(number);
+                        if(p==null)
+                            midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+                        else {
+                            midContent.append(" "+ p.getName_() + "\t | ");
+                        }
+
                         midContent.append(" " + callData.elementAt(i).getDuration_() + "  ");
                         midContent.append("\n");
                     }

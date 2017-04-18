@@ -9,13 +9,15 @@ import java.awt.event.*;
 
 public class msgPanel extends JPanel {
 
-    JButton seeAll = new JButton("See All msg");
-    JButton seeSent = new JButton("See Sent");
-    JButton seeRece = new JButton("See Received");
-    JPanel msgMenu = new JPanel();
-    JTextArea midContent = new JTextArea(32, 32);
-    JScrollPane midScroll = new JScrollPane(midContent);
-    Vector<Sms> smsData = new Vector<Sms>();
+    JButton seeAll = new JButton("See All msg"); //모든 문자 기록
+    JButton seeSent = new JButton("See Sent"); // 보낸 문자 기록
+    JButton seeRece = new JButton("See Received"); // 받은 문자 기록
+
+    JPanel msgMenu = new JPanel();// 옵션 메뉴들을 붙여줄 msgMenu, jpanel로 만듦
+    JTextArea midContent = new JTextArea(32, 30); // 현재 패널에 삽입될 text area, 문자 기록들이 표시될 공간
+    JScrollPane midScroll = new JScrollPane(midContent);  // midContent에 생길 scroll bar
+
+    Vector<Sms> smsData = new Vector<Sms>(); // json 파일에서 데이터를 읽어올 msgHistory를 저장할 vector
 
     public msgPanel(){
 
@@ -25,14 +27,18 @@ public class msgPanel extends JPanel {
 
 
         midScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        midScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        midScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         midContent.append("  S  |" + "        Time         " +  "|   Phone number " + "   |" + " Text  \t\n" );
 
 
 
-        smsData = JRead.readSms();
+        smsData = JRead.readSms(); // json파일로부터 데이터를 읽어온다
         Collections.sort(smsData, new TimeDescCompare());
-        //System.out.println(smsData.elementAt(0).getNumber_());
+        // 시간 순 정렬 ( 내림차순 정렬 )
+
+
+        // status가 0이면 내가 보낸 문자 이므로 -> 표시
+        // status가 1이면 내가 받은 문자 이므로 <- 표시
 
 
         for(int i=0 ; i < smsData.size() ; i++) {
@@ -43,7 +49,15 @@ public class msgPanel extends JPanel {
                 midContent.append(" <-");
 
             midContent.append(" "+smsData.elementAt(i).getTime_() + " | ");
-            midContent.append(" "+smsData.elementAt(i).getNumber_() + " | ");
+
+            String number = smsData.elementAt(i).getNumber_();
+            Person p = contactPanel.contactMap.get(number);
+            if(p==null)
+                midContent.append(" "+smsData.elementAt(i).getNumber_() + " | ");
+            else {
+                midContent.append(p.getName_() + "\t | ");
+            }
+
             midContent.append(" " + smsData.elementAt(i).getText_() + "  ");
 
 
@@ -62,6 +76,9 @@ public class msgPanel extends JPanel {
         seeAll.addActionListener(btnListener);
         seeSent.addActionListener(btnListener);
         seeRece.addActionListener(btnListener);
+
+        // msgHistory 옵션 메뉴의 버튼들에 각각 button listener를 달아준다.
+
 
         msgMenu.add(seeAll);
         msgMenu.add(seeSent);
@@ -85,6 +102,7 @@ public class msgPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            // See All msg 버튼 누를 때
             if( e.getActionCommand().equals("See All msg") ) {
 
                 midContent.setText("  S  |" + "        Time         " +  "|   Phone number " + "   |" + " Text  \t\n");
@@ -96,13 +114,23 @@ public class msgPanel extends JPanel {
                         midContent.append(" <-");
 
                     midContent.append(" "+smsData.elementAt(i).getTime_() + " | ");
-                    midContent.append(" "+smsData.elementAt(i).getNumber_() + " | ");
+
+
+                    String number = smsData.elementAt(i).getNumber_();
+                    Person p = contactPanel.contactMap.get(number);
+                    if(p==null)
+                        midContent.append(" "+smsData.elementAt(i).getNumber_() + " | ");
+                    else {
+                        midContent.append(p.getName_() + "\t | ");
+                    }
+
                     midContent.append(" " + smsData.elementAt(i).getText_() + "  ");
                     midContent.append("\n");
                 }
 
 
-            } else if( e.getActionCommand().equals("See Sent")){
+            } // See sent 버튼 누를 때
+            else if( e.getActionCommand().equals("See Sent")){
                 System.out.println("hi");
                 midContent.setText("  S  |" + "        Time         " +  "|   Phone number " + "   |" + " Text  \t\n");
 
@@ -111,14 +139,24 @@ public class msgPanel extends JPanel {
                     if ((smsData.elementAt(i).getStatus_().equals("0"))) {
                         midContent.append(" ->");
                         midContent.append(" " + smsData.elementAt(i).getTime_() + " | ");
-                        midContent.append(" " + smsData.elementAt(i).getNumber_() + " | ");
+
+
+                        String number = smsData.elementAt(i).getNumber_();
+                        Person p = contactPanel.contactMap.get(number);
+                        if(p==null)
+                            midContent.append(" "+smsData.elementAt(i).getNumber_() + " | ");
+                        else {
+                            midContent.append(p.getName_() + "\t | ");
+                        }
+
                         midContent.append(" " + smsData.elementAt(i).getText_() + "  ");
                         midContent.append("\n");
                     }
                 }
 
 
-            } else if( e.getActionCommand().equals("See Received")) {
+            } // See Received 버튼 누를 때
+            else if( e.getActionCommand().equals("See Received")) {
                 midContent.setText("  S  |" + "        Time         " +  "|   Phone number " + "   |" + " Text  \t\n");
 
                 for(int i=0 ; i < smsData.size() ; i++) {
@@ -126,7 +164,15 @@ public class msgPanel extends JPanel {
                     if((smsData.elementAt(i).getStatus_().equals("1"))) {
                         midContent.append(" <-");
                         midContent.append(" "+smsData.elementAt(i).getTime_() + " | ");
-                        midContent.append(" "+smsData.elementAt(i).getNumber_() + " | ");
+
+                        String number = smsData.elementAt(i).getNumber_();
+                        Person p = contactPanel.contactMap.get(number);
+                        if(p==null)
+                            midContent.append(" "+smsData.elementAt(i).getNumber_() + " | ");
+                        else {
+                            midContent.append(p.getName_() + "\t | ");
+                        }
+
                         midContent.append(" " + smsData.elementAt(i).getText_() + "  ");
                         midContent.append("\n");
                     }
