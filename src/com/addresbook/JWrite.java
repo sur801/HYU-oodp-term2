@@ -32,7 +32,7 @@ public class JWrite {
         entryObject.put("person", entryList);
 
         try {
-            FileWriter fileWriter = new FileWriter("/Users/seoyulim/IdeaProjects/OODP_term2/entry.json");
+            FileWriter fileWriter = new FileWriter("C:\\Users\\USER\\Documents\\Github\\OODP_term2\\entry.json");
             fileWriter.write(entryObject.toJSONString());
             fileWriter.flush();
             fileWriter.close();
