@@ -1,11 +1,13 @@
 package com.addresbook;
 
 /**
- * Created by USER on 2017-04-15.
+ * Created by Jeonghoon Lee on 2017-04-15.
  */
 
 
 public class Sms {
+
+    // Constructor
     Sms (String time, String number, String text, String status) {
         this.time_ = time;
         this.number_ = number;
@@ -13,7 +15,7 @@ public class Sms {
         this.status_ = status;
     }
 
-
+    // getters
     public String getTime_() {
         return time_;
     }

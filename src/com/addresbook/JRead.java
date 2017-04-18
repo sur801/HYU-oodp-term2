@@ -14,8 +14,6 @@ public class JRead {
 
 
     public static Vector<Person> readPerson() {
-    //public static void main(String[] args) {
-
 
         JSONParser parser = new JSONParser();
         Vector<Person> persons = new Vector<Person>();
@@ -23,10 +21,12 @@ public class JRead {
         String personFile = path + "entry.json";
 
         try {
+            // person이라는 key값의 JSONArray를 불러온다.
             Object object = parser.parse(new FileReader(personFile));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray personArray = (JSONArray) jsonObject.get("person");
 
+            // personArray에 담겨 있는 JSONObect들을 객체로 만들어 벡터에 담는다.
             for (int i = 0; i < personArray.size(); i++) {
 
                 JSONObject personObject = (JSONObject) personArray.get(i);
@@ -40,15 +40,6 @@ public class JRead {
 
             }
 
-            /*
-            JSONArray msg = (JSONArray)jsonObject.get("messages");
-            Iterator<String> iterator = msg.iterator();
-
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-            }
-            */
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -57,7 +48,8 @@ public class JRead {
             e.printStackTrace();
         }
 
-         return persons;
+        // Person 객체들이 담긴 벡터를 리턴한다.
+        return persons;
     }
 
     public static Vector<Call> readCall() {
@@ -69,10 +61,12 @@ public class JRead {
         String dataFile = path + "data.json";
 
         try {
+            // call이라는 key값의 JSONArray를 불러온다.
             Object object = parser.parse(new FileReader(dataFile));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray callArray = (JSONArray) jsonObject.get("call");
 
+            // callArray에 담겨 있는 JSONObect들을 객체로 만들어 벡터에 담는다.
             for (int i = 0; i < callArray.size(); i++) {
 
                 JSONObject callObject = (JSONObject) callArray.get(i);
@@ -107,13 +101,12 @@ public class JRead {
         String dataFile = path + "data.json";
 
         try {
-
-
-
+            // sms이라는 key값의 JSONArray를 불러온다.
             Object object = parser.parse(new FileReader(dataFile));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray smsArray = (JSONArray) jsonObject.get("sms");
 
+            // smsArray에 담겨 있는 JSONObect들을 객체로 만들어 벡터에 담는다.
             for (int i = 0; i < smsArray.size(); i++) {
 
                 JSONObject smsObject = (JSONObject) smsArray.get(i);

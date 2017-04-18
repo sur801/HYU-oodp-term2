@@ -10,16 +10,18 @@ import java.util.Vector;
  * Created by USER on 2017-04-15.
  */
 public class Person {
-    Person () {
 
-    }
+    // Constructor
+    Person () { }
 
+    // Constructor overloading
     Person (String name, String number, String email) {
         this.name_ = name;
         this.number_ =  number;
         this.email_ = email;
     }
 
+    // getters
     public String getName_() {
         return name_;
     }
@@ -33,12 +35,14 @@ public class Person {
     }
 
 
+    // 벡터에 담긴 Person 객체들을 이름을 기준으로 오름차순으로 정렬한다.
     public static Vector<Person> sortEntry (Vector<Person> entry) {
         Collections.sort(entry, new PersonComparator());
 
         return entry;
     }
 
+    // 벡터에 담긴 Person 객체 중 인자로 받아온 이름값과 일치하는 객체를 찾는다.
     public static Person findPersonByName (Vector<Person> entry, String name) {
         int left = 0;
         int right = entry.size() - 1;
@@ -61,6 +65,7 @@ public class Person {
         return null;
     }
 
+    // 벡터에 담긴 Person 객체 중 인자로 받아온 이름값과 일치하는 객체를 지워준다.
     public static Vector<Person> deleteByName (Vector<Person> entry, String name) {
         Person p = new Person();
         p = findPersonByName(entry, name);
@@ -74,7 +79,7 @@ public class Person {
 
     }
 
-
+    // Person 객체를 정렬할 때 비교하기 위해 사용
     static class PersonComparator implements Comparator<Person> {
         public int compare (Person left, Person right) {
             return left.getName_().compareTo(right.getName_());

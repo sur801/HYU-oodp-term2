@@ -1,7 +1,12 @@
 package com.addresbook;
 
+/**
+ * Created by Jeonghoon Lee on 2017-04-15.
+ */
+
 public class Call {
 
+    // Constructor
     Call (String time, String number, String duration, String status) {
         this.time_ = time;
         this.number_ = number;
@@ -9,6 +14,7 @@ public class Call {
         this.status_ = status;
     }
 
+    // getters
     public String getTime_() {
         return time_;
     }
