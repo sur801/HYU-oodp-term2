@@ -57,7 +57,7 @@ public class msgPanel extends JPanel {
             if(p==null)
                 midContent.append(String.format(" %-15s |", smsData.elementAt(i).getNumber_()));
             else {
-                midContent.append(String.format(p.getName_()) + "  |" );
+                midContent.append(String.format(" %-15s |", p.getName_()));
 
             }
 

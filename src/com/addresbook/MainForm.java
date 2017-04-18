@@ -28,7 +28,7 @@ public class MainForm extends JFrame{
         setTitle("Address Book By, yurim and junghoon :-)");
         setSize(385, 675);
         // 실행 폼 크기 설정
-        //this.setResizable(false);
+        sthis.setResizable(false);
         // 실행 폼의 크기를 임의로 바꿀 수 없도록 설정
 
         topPanel.setBackground(Color.pink);
