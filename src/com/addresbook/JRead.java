@@ -23,7 +23,7 @@ public class JRead {
         Vector<Person> persons = new Vector<Person>();
 
         try {
-            Object object = parser.parse(new FileReader("/Users/seoyulim/IdeaProjects/OODP_term2/data.json"));
+            Object object = parser.parse(new FileReader("/Users/seoyulim/IdeaProjects/OODP_term2/entry.json"));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray personArray = (JSONArray) jsonObject.get("person");
 

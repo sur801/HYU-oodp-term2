@@ -29,10 +29,10 @@ public class JWrite {
 
         }
 
-        entryObject.put("messages", entryList);
+        entryObject.put("person", entryList);
 
         try {
-            FileWriter fileWriter = new FileWriter("C:\\Users\\USER\\Desktop\\test\\entry.json");
+            FileWriter fileWriter = new FileWriter("/Users/seoyulim/IdeaProjects/OODP_term2/entry.json");
             fileWriter.write(entryObject.toJSONString());
             fileWriter.flush();
             fileWriter.close();

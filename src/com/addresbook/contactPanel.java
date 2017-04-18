@@ -15,7 +15,7 @@ public class contactPanel extends JPanel {
     JTextField number = new JTextField("010-xxxx-xxxx"); // add 할 때 dialog에 나타날 textfield
     JTextField email = new JTextField("yurim@example.com"); // add 할 때 dialog에 나타날 textfield
 
-
+    boolean firstExecute = true;
 
     JTextField textfName = new JTextField(10);
     JButton findByNamebtn = new JButton("FindByName");
@@ -45,14 +45,18 @@ public class contactPanel extends JPanel {
         textfName.setText("Name");
         textfNumber.setText("010-xxxx-xxxx");
 
-
-        contactData = JRead.readPerson();
+        if(firstExecute) {
+            contactData = JRead.readPerson();
+            contactData = Person.sortEntry(contactData);
+            // 이름 순 정렬 ( 오름차순 정렬 )
+            firstExecute = false;
+            contactMap = Person.createNumberMap(contactData);
+        }
 
         contactData = Person.sortEntry(contactData);
-        // 이름 순 정렬 ( 오름차순 정렬 )
-
-        contactMap = Person.createNumberMap(contactData);
         Display();
+
+
 
 
 
@@ -164,7 +168,8 @@ public class contactPanel extends JPanel {
         delByNamebtn.addActionListener(btnListener);
         findByNumbbtn.addActionListener(btnListener);
         delByNumbbtn.addActionListener(btnListener);
-
+        saveBtn.addActionListener(btnListener);
+        loadBtn.addActionListener(btnListener);
         this.add(contactMenu, BorderLayout.SOUTH);
 
     }
@@ -264,6 +269,14 @@ public class contactPanel extends JPanel {
 
                 }
 
+            }
+            else if(e.getActionCommand().equals("Save Data")) {
+                JWrite.savePerson(contactData);
+            }
+            else if(e.getActionCommand().equals("Load Data")) {
+                contactData = JRead.readPerson();
+                contactMap = Person.createNumberMap(contactData);
+                Display();
             }
         }
 
