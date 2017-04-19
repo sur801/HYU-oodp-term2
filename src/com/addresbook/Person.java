@@ -81,6 +81,7 @@ public class Person {
         }
     }
 
+    // 해쉬 맵은 키 값에 매칭해서 바로 value를 가져오는 구조이다. 그러므로 시간복잡도는 상수이다.
     public static HashMap<String, Person> createNumberMap(Vector<Person> entry) {
         HashMap<String, Person> numberMap = new HashMap<String, Person>();
         for (int i = 0; i < entry.size(); i++) {

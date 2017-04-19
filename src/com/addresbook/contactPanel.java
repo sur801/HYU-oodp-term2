@@ -20,13 +20,14 @@ public class contactPanel extends JPanel {
 
     boolean firstExecute = true;
 
-    JTextField textfName = new JTextField(10);
+    JTextField textfName = new JTextField(10); //  삭제할 객체의 이름을 입력할 textfiled
     JButton findByNamebtn = new JButton("FindByName");
     JButton delByNumbbtn = new JButton("DelByNumb");
 
-    JTextField textfNumber = new JTextField(10);
+    JTextField textfNumber = new JTextField(10); //  삭제할 객체의 번호 입력할 textfiled
     JButton delByNamebtn = new JButton("DelByName");
     JButton findByNumbbtn = new JButton("FindByNumb");
+
     JButton loadBtn = new JButton("Load Data");
     JButton saveBtn = new JButton("Save Data");
     JButton addBtn = new JButton("Add Data");
@@ -47,6 +48,7 @@ public class contactPanel extends JPanel {
 
         textfName.setText("Name");
         textfNumber.setText("010-xxxx-xxxx");
+        // 기본 입력 양식을 세팅해둔다.
 
         if(firstExecute) {
             contactData = JRead.readPerson();
@@ -56,12 +58,8 @@ public class contactPanel extends JPanel {
             contactMap = Person.createNumberMap(contactData);
         }
 
-        contactData = Person.sortEntry(contactData);
+        contactData = Person.sortEntry(contactData);// 이름순 정렬
         Display();
-
-
-
-
 
 
 
@@ -69,7 +67,7 @@ public class contactPanel extends JPanel {
 
 
 
-
+        // 커서가 입력되면, 텍스트필드의 입력 양식이 사라진다
         textfNumber.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -81,6 +79,7 @@ public class contactPanel extends JPanel {
 
             }
         });
+
 
         number.addFocusListener(new FocusListener() {
             @Override
@@ -132,7 +131,7 @@ public class contactPanel extends JPanel {
         });
 
 
-
+        //레이아웃과 배경색 설정
         this.setLayout(new BorderLayout());
         this.setBackground(Color.getHSBColor((float)2.00,(float)0.15, (float)1.0));
         topMenu.setBackground(Color.getHSBColor((float)2.00,(float)0.15, (float)1.0));
@@ -166,6 +165,7 @@ public class contactPanel extends JPanel {
 
         ButtonListener btnListener  = new ButtonListener();
 
+        // 버튼 리스너를 달아준다
         addBtn.addActionListener(btnListener);
         findByNamebtn.addActionListener(btnListener);
         delByNamebtn.addActionListener(btnListener);
@@ -178,6 +178,8 @@ public class contactPanel extends JPanel {
     }
 
     static void Display (){
+
+        //  TextArea에 보여줄 함수
 
         contactContent.setText("   Name      " +  "|   Phone number  |" + "  E-mail\n" );
         for(int i=0 ; i < contactData.size() ; i++) {
@@ -204,29 +206,30 @@ public class contactPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getActionCommand().equals("Add Data")) {
-                //new AddDialog("전화번호부에 객체를 추가 합시다");
 
+                //기본 글자 세팅
                 name.setText("Name");
                 number.setText("010-xxxx-xxxx");
                 email.setText("yurim@example.com");
 
                 int result = JOptionPane.showConfirmDialog(null, Content, "전화번호부에 객체를 추가합시다",JOptionPane.OK_CANCEL_OPTION);
-
+                // add할 person 객체의 정보를 다 입력하고 확인버튼을 누를 시
                 if(result == JOptionPane.OK_OPTION) {
                     Person p = new Person(name.getText(), number.getText(), email.getText());
-                    contactData.add(p);
-                    contactMap.put(p.getNumber_(), p);
+                    contactData.add(p); // vector에 정보 추가
+                    contactMap.put(p.getNumber_(), p); // map에 정보 추가
                     contactData = Person.sortEntry(contactData);
                     Display();
                 }
 
             }
             else if(e.getActionCommand().equals("FindByName")) {
-
+                // 이진 탐색으로 가져온 데이터 저장
                 Person p = Person.findPersonByName(contactData,textfName.getText());
-                if(p==null)
+                if(p==null) // 못찾으면 person객체가 null이므로 에러 메시지
                     JOptionPane.showMessageDialog(null, "No Data","Find Error",JOptionPane.ERROR_MESSAGE);
                 else {
+                    // 찾은 데이터를 dialog로 띄운다
                     String data = p.getNumber_() + "  " + p.getEmail_();
                     JOptionPane.showMessageDialog(null, data,"Find Data",JOptionPane.PLAIN_MESSAGE);
 
@@ -235,20 +238,21 @@ public class contactPanel extends JPanel {
             else if(e.getActionCommand().equals("DelByName")){
                 Vector<Person> temp = Person.deleteByName(contactData, textfName.getText());
 
+
                 if(temp !=null) {
                     contactData = temp;
                     Person p = Person.findPersonByName(contactData,textfName.getText());
                     contactMap = Person.createNumberMap(contactData); // 수정된 person vector를 불러와 map을 초기화 한다
                     Display();
                 }
-                else
+                else//못찾으면 person 객체가 null이므로 에러 메시지
                     JOptionPane.showMessageDialog(null, "No Data","Delete Error",JOptionPane.ERROR_MESSAGE);
 
             }
             else if(e.getActionCommand().equals("FindByNumb")) {
-
+                // HashMap의 get 함수를 통해 value를 바로 매칭해 가져온다. 시간복잡도 상수
                 Person p = contactMap.get(textfNumber.getText());
-
+                // 못찾으면 person객체가 null이므로 에러 메시지
                 if(p==null)
                     JOptionPane.showMessageDialog(null, "No Data","Find Error",JOptionPane.ERROR_MESSAGE);
                 else {
@@ -261,6 +265,7 @@ public class contactPanel extends JPanel {
 
                 Person p = contactMap.get(textfNumber.getText());
 
+                // 못찾으면 person객체가 null이므로 에러 메시지
                 if( p==null) {
                     JOptionPane.showMessageDialog(null, "No Data","Delete Error",JOptionPane.ERROR_MESSAGE);
 
@@ -276,11 +281,12 @@ public class contactPanel extends JPanel {
 
             }
             else if(e.getActionCommand().equals("Save Data")) {
+                contactData = Person.sortEntry(contactData);// 저장하기 전에 소트
                 JWrite.savePerson(contactData);
             }
             else if(e.getActionCommand().equals("Load Data")) {
-                contactData = JRead.readPerson();
-                contactMap = Person.createNumberMap(contactData);
+                contactData = JRead.readPerson();// json에서 데이터를 불러와 로컬에 저장
+                contactMap = (Person.createNumberMap(contactData));// 불러온 데이터를 map에도 저장
                 Display();
             }
         }

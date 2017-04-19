@@ -19,38 +19,26 @@ public class MainForm extends JFrame{
     public MainForm() {
 
 
-        //File path = new File(".");
-       //System.out.println(path.getAbsolutePath());
-
         setLayout(new BorderLayout());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // X 버튼을 누르면 실행이 끝나도록 설정
         setTitle("Address Book By, yurim and junghoon :-)");
         setSize(385, 675);
         // 실행 폼 크기 설정
-        sthis.setResizable(false);
+        this.setResizable(false);
         // 실행 폼의 크기를 임의로 바꿀 수 없도록 설정
 
         topPanel.setBackground(Color.pink);
         contentPanel.setBackground(Color.getHSBColor((float)2.00,(float)0.15, (float)1.0));
 
-
-
-
+        // 메인 메뉴
         JButton[] Top_btn = new JButton[3];
 
         Top_btn[0] = new JButton("Call History");
         Top_btn[0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*
-                call_menu cm = new call_menu();
-                //call history의 세부 메뉴 들이 있는 panel
-                bp.removeAll(); // 일단 하단 패널을 비운다
-                bp.add(cm);// call history의 메튜 패널을 붙인다
-                bp.revalidate();
-                bp.repaint();
-                */
+
                 callPanel cp = new callPanel();
 
                 contentPanel.removeAll(); // dataPanel이 붙여질 contentPanel을 비운다
@@ -108,7 +96,7 @@ public class MainForm extends JFrame{
 
         this.add(topPanel, BorderLayout.NORTH);
         this.add(contentPanel, BorderLayout.CENTER);
-        //this.add(bp, BorderLayout.SOUTH);
+
         setVisible(true);
     }
 
