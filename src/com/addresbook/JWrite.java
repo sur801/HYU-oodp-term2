@@ -31,8 +31,11 @@ public class JWrite {
 
         entryObject.put("person", entryList);
 
+        String path = JRead.class.getResource("").getPath(); // 현재 클래스의 절대 경로를 가져온다.
+        String personFile = path + "entry.json";
+
         try {
-            FileWriter fileWriter = new FileWriter("C:\\Users\\USER\\Documents\\Github\\OODP_term2\\entry.json");
+            FileWriter fileWriter = new FileWriter(personFile);
             fileWriter.write(entryObject.toJSONString());
             fileWriter.flush();
             fileWriter.close();
