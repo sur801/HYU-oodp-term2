@@ -2,9 +2,12 @@ package com.addresbook;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * Created by seoyulim on 2017. 4. 17..
@@ -176,12 +179,14 @@ public class contactPanel extends JPanel {
 
     static void Display (){
 
-        contactContent.setText("     Name         " +  "|   Phone number " + "   |" + " E-mail\n" );
+        contactContent.setText("   Name      " +  "|   Phone number  |" + "  E-mail\n" );
         for(int i=0 ; i < contactData.size() ; i++) {
 
-            contactContent.append(" "+contactData.elementAt(i).getName_() + "\t| ");
-            contactContent.append(" "+contactData.elementAt(i).getNumber_() + "   | ");
-            contactContent.append(" " + contactData.elementAt(i).getEmail_() + "  ");
+            // String s = " "+contactData.elementAt(i).getName_() + "| ";
+
+            contactContent.append(String.format(" %-13s |", contactData.elementAt(i).getName_()));
+            contactContent.append(String.format(" %-15s |", contactData.elementAt(i).getNumber_()));
+            contactContent.append(String.format(" %-20s |", contactData.elementAt(i).getEmail_()));
             //append 메소드를 통해 textArea에 내용을 추가 한다
 
             contactContent.append("\n");

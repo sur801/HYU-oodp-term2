@@ -2,9 +2,8 @@ package com.addresbook;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by seoyulim on 2017. 4. 13..

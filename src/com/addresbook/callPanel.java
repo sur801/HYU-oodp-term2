@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Vector;
 
 public class callPanel extends JPanel {
 
@@ -31,7 +33,7 @@ public class callPanel extends JPanel {
 
         midScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         midScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        midContent.append("   S  |" + "        Time         " +  "|   Phone number " + "   |" + " During\n" );
+        midContent.append("   S  |" + "          Time         " +  "|   Phone number " + "   |" + " During\n" );
 
 
 
@@ -47,21 +49,21 @@ public class callPanel extends JPanel {
         for(int i=0 ; i < callData.size() ; i++) {
 
             if((callData.elementAt(i).getStatus_().equals("0")))
-                midContent.append(" -> ");
+                midContent.append(" -> |");
             else if((callData.elementAt(i).getStatus_().equals("1")))
-                midContent.append(" <- ");
+                midContent.append(" <- |");
             else if((callData.elementAt(i).getStatus_().equals("2")))
-                midContent.append("  ??? ");
+                midContent.append(" ?? |");
 
-            midContent.append(" "+callData.elementAt(i).getTime_() + " | ");
+            midContent.append(String.format(" %-14s |", callData.elementAt(i).getTime_()));
             String number = callData.elementAt(i).getNumber_();
             Person p = contactPanel.contactMap.get(number);
             if(p==null)
-                midContent.append(" "+callData.elementAt(i).getNumber_() + " | ");
+                midContent.append(String.format(" %-15s |", callData.elementAt(i).getNumber_()));
             else {
-                midContent.append(p.getName_() + "\t | ");
+                midContent.append(String.format(" %-15s |", p.getName_()));
             }
-            midContent.append(" " + callData.elementAt(i).getDuration_() + "  ");
+            midContent.append(String.format(" %-5s ", callData.elementAt(i).getDuration_()));
             //append 메소드를 통해 textArea에 내용을 추가 한다
 
             midContent.append("\n");

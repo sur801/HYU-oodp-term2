@@ -7,7 +7,6 @@ import org.json.simple.parser.JSONParser;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -23,7 +22,7 @@ public class JRead {
         Vector<Person> persons = new Vector<Person>();
 
         try {
-            Object object = parser.parse(new FileReader("/Users/seoyulim/IdeaProjects/OODP_term2/entry.json"));
+            Object object = parser.parse(new FileReader("C:\\Users\\USER\\Documents\\Github\\OODP_term2\\data.json"));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray personArray = (JSONArray) jsonObject.get("person");
 
@@ -68,7 +67,7 @@ public class JRead {
 
 
         try {
-            Object object = parser.parse(new FileReader("/Users/seoyulim/IdeaProjects/OODP_term2/data.json"));
+            Object object = parser.parse(new FileReader("C:\\Users\\USER\\Documents\\Github\\OODP_term2\\data.json"));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray callArray = (JSONArray) jsonObject.get("call");
 
@@ -103,7 +102,7 @@ public class JRead {
         Vector<Sms> msgs = new Vector<Sms>();
 
         try {
-            Object object = parser.parse(new FileReader("/Users/seoyulim/IdeaProjects/OODP_term2/data.json"));
+            Object object = parser.parse(new FileReader("C:\\Users\\USER\\Documents\\Github\\OODP_term2\\data.json"));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray smsArray = (JSONArray) jsonObject.get("sms");
 

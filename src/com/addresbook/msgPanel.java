@@ -1,11 +1,13 @@
 package com.addresbook;
 
 
-
-import java.util.*;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Vector;
 
 public class msgPanel extends JPanel {
 
@@ -44,21 +46,21 @@ public class msgPanel extends JPanel {
         for(int i=0 ; i < smsData.size() ; i++) {
 
             if((smsData.elementAt(i).getStatus_().equals("0")))
-                midContent.append(" ->");
+                midContent.append(" -> ");
             else if((smsData.elementAt(i).getStatus_().equals("1")))
-                midContent.append(" <-");
+                midContent.append(" <- ");
 
-            midContent.append(" "+smsData.elementAt(i).getTime_() + " | ");
+            midContent.append(String.format(" %-14s |", smsData.elementAt(i).getTime_()));
 
             String number = smsData.elementAt(i).getNumber_();
             Person p = contactPanel.contactMap.get(number);
             if(p==null)
-                midContent.append(" "+smsData.elementAt(i).getNumber_() + " | ");
+                midContent.append(String.format(" %-15s |", smsData.elementAt(i).getNumber_()));
             else {
-                midContent.append(p.getName_() + "\t | ");
+                midContent.append(String.format(p.getName_()));
             }
 
-            midContent.append(" " + smsData.elementAt(i).getText_() + "  ");
+            midContent.append(String.format(" %-140s |", smsData.elementAt(i).getText_()));
 
 
             midContent.append("\n");
