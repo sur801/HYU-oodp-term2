@@ -4,9 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Vector;
 
 /**
@@ -18,11 +16,14 @@ public class JRead {
     public static Vector<Person> readPerson() {
     //public static void main(String[] args) {
 
+
         JSONParser parser = new JSONParser();
         Vector<Person> persons = new Vector<Person>();
+        String path = JRead.class.getResource("").getPath(); // 현재 클래스의 절대 경로를 가져온다.
+        String personFile = path + "entry.json";
 
         try {
-            Object object = parser.parse(new FileReader("C:\\Users\\USER\\Documents\\Github\\OODP_term2\\data.json"));
+            Object object = parser.parse(new FileReader(personFile));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray personArray = (JSONArray) jsonObject.get("person");
 
@@ -64,10 +65,11 @@ public class JRead {
         JSONParser parser = new JSONParser();
         Vector<Call> calls = new Vector<Call>();
 
-
+        String path = JRead.class.getResource("").getPath(); // 현재 클래스의 절대 경로를 가져온다.
+        String dataFile = path + "data.json";
 
         try {
-            Object object = parser.parse(new FileReader("C:\\Users\\USER\\Documents\\Github\\OODP_term2\\data.json"));
+            Object object = parser.parse(new FileReader(dataFile));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray callArray = (JSONArray) jsonObject.get("call");
 
@@ -101,8 +103,14 @@ public class JRead {
         JSONParser parser = new JSONParser();
         Vector<Sms> msgs = new Vector<Sms>();
 
+        String path = JRead.class.getResource("").getPath(); // 현재 클래스의 절대 경로를 가져온다.
+        String dataFile = path + "data.json";
+
         try {
-            Object object = parser.parse(new FileReader("C:\\Users\\USER\\Documents\\Github\\OODP_term2\\data.json"));
+
+
+
+            Object object = parser.parse(new FileReader(dataFile));
             JSONObject jsonObject = (JSONObject) object;
             JSONArray smsArray = (JSONArray) jsonObject.get("sms");
 
